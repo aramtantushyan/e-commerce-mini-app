@@ -12,35 +12,36 @@ const TabsLayout = () => {
             tabBarActiveTintColor: LightTheme.colors.brandColor,
             headerShadowVisible: false
         }}>
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: 'Home',
-              tabBarIcon: ({ color }) => <HomeIcon fillColor={color}/>,
-            }}
-          />
-          <Tabs.Screen
-            name="categories"
-            options={{
-              title: 'Categories',
-              tabBarIcon: ({ color }) => <CategoriesIcon fillColor={color} />,
-            }}
-          />
-          <Tabs.Screen
-            name="wishlist"
-            options={{
-              title: 'Wishlist',
-              tabBarIcon: ({ color }) => <WishlistIcon fillColor={color}/>,
-              ...(!user ? { href: null } : {})
-            }}
-          />
-          <Tabs.Screen
-            name="profile"
-            options={{
-              title: 'Profile',
-              tabBarIcon: ({ color }) => <ProfileIcon fillColor={color} />,
-            }}
-          />
+            <Tabs.Screen
+                name="index"
+                options={{
+                    title: 'Home',
+                    tabBarIcon: ({ color }) => <HomeIcon fillColor={color}/>,
+                }}
+            />
+            <Tabs.Screen
+                name="categories"
+                options={{
+                    title: 'Categories',
+                    tabBarIcon: ({ color }) => <CategoriesIcon fillColor={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="wishlist"
+                options={{
+                    title: 'Wishlist',
+                    tabBarIcon: ({ color }) => <WishlistIcon fillColor={color}/>,
+                    headerShown: !!user
+                }}
+            />
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    title: 'Profile',
+                    tabBarIcon: ({ color }) => <ProfileIcon fillColor={color} />,
+                    headerShown: !!user
+                }}
+            />
         </Tabs>
       );
 }

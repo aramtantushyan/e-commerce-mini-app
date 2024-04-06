@@ -1,7 +1,8 @@
 import axios, { AxiosError, ResponseType } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/user/UserContext";
-import { logoutUser } from "../reducers/user/UserReducerDispatch";
+import { deleteAuthToken, logoutUser } from "../reducers/user/UserReducerDispatch";
+import { removeDataFromAsyncStorage } from "../utils/helpers/async-storage.helper";
 
 export enum HTTPMethods {
     POST = "post",
@@ -24,7 +25,7 @@ interface IAxiosState<T> {
 }
 
 export const useAxios = <T = any, >(url?: string, requestConfig?: IRequestConfig) => {
-    const { accessToken, deleteAuthToken, dispatch } = useContext(UserContext);
+    const { accessToken, dispatch } = useContext(UserContext);
     const [fullData, setFullData] = useState<IAxiosState<T>>({
         loading: !!url,
         data: null
@@ -50,11 +51,18 @@ export const useAxios = <T = any, >(url?: string, requestConfig?: IRequestConfig
                 data: response,
                 loading: false
             });
+            return response;
         } catch (error: AxiosError) {
             if (error.response?.status === 401) {
-                deleteAuthToken?.();
+                dispatch?.(deleteAuthToken());
                 dispatch?.(logoutUser());
+                removeDataFromAsyncStorage("accessToken");
             }
+            setFullData({
+                ...fullData,
+                loading: false
+            });
+            throw error;
         }
     }
     return {

@@ -24,21 +24,11 @@ const UserContextProvider: React.FC<PropsWithChildren & { token?: string | null 
         dispatch?.(setUser(currentUser));
     }
 
-    const setToken = (data: AuthToken) => {
-        dispatch(setAuthToken?.(data));
-    };
-
-    const deleteToken = () => {
-        dispatch(deleteAuthToken?.());
-    }
-
     return (
         <UserContext.Provider value={{
             user: state.user,
             accessToken: state.accessToken || token,
-            dispatch,
-            setAuthToken: setToken,
-            deleteAuthToken: deleteToken,
+            dispatch
         }}>
             {children}
         </UserContext.Provider>

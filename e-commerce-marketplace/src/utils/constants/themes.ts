@@ -17,7 +17,7 @@ export const LightThemeColors: ICustomColors = {
     primary: "#000",
     background: "#F9F9F9",
     text: "#1E1D1D",
-    border: "#DFDFDF",
+    border: "#E6E6E6",
     card: "#FFFFFF",
     notification: "rgb(255, 69, 58)",
     brandColor: "#7867BE",

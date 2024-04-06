@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Slot, SplashScreen } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet } from 'react-native';
 
@@ -10,9 +10,9 @@ import UIContextProvider from "../src/contexts/ui/UIContextProvider";
 const _layout = () => {
     const [accessToken, setAccessToken] = useState<null | string>();
     const [fontsLoaded, fontError] = useFonts({
-        GpothamRegular: require('../assets/fonts/GothamLight.ttf'),
-        GothamBold: require('../assets/fonts/GothamBold.ttf'),
-        GothamMedium: require('../assets/fonts/GothamMedium.ttf'),
+        GothamLight: require('../assets/fonts/GothamLight.otf'),
+        GothamBold: require('../assets/fonts/GothamBold.otf'),
+        GothamMedium: require('../assets/fonts/GothamMedium.otf'),
     });
     
     useEffect(() => {
@@ -38,7 +38,16 @@ const _layout = () => {
         <View style={styles.container} onLayout={onLayoutRootView}>
             <UserContextProvider token={accessToken}>
                 <UIContextProvider>
-                    <Slot />
+                    <Stack>
+                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        <Stack.Screen 
+                            name="login"
+                            options={{ 
+                                headerShown: false,
+                                presentation: "modal"
+                            }}
+                        />
+                    </Stack>
                 </UIContextProvider>
             </UserContextProvider>
         </View>

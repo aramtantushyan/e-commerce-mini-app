@@ -10,8 +10,6 @@ export interface IUserContextProps {
     user?: IUser;
     accessToken?: string | null;
     dispatch?: Dispatch<IUserActionProps>;
-    setAuthToken?: (authToken: AuthToken) => void;
-    deleteAuthToken?: () => void;
 }
 
 export const UserContext: React.Context<IUserContextProps> = React.createContext({});
