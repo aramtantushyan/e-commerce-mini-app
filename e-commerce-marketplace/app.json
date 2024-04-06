@@ -12,6 +12,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "fonts": {
+      "custom": [
+        "./assets/fonts/GothamBols.ttf",
+        "./assets/fonts/GothamLight.ttf",
+        "./assets/fonts/GothamMedium.ttf"
+      ]
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -29,7 +36,8 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ]
   }
 }

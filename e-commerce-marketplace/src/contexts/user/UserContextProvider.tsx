@@ -3,29 +3,25 @@ import { PropsWithChildren, useEffect, useReducer, useState } from "react";
 import { AuthToken, UserContext } from "./UserContext";
 import UserAuthReducer, { initialUserState } from "../../reducers/user/UserReducer";
 import { deleteAuthToken, setAuthToken, setUser } from "../../reducers/user/UserReducerDispatch";
-import { readDataFromAsyncStorage } from "../../utils/helpers/async-storage.helper";
 import { HTTPMethods, customAxios } from "../../hooks/useAxios";
 import { getMePath } from "../../utils/api/api";
 
-const UserContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const UserContextProvider: React.FC<PropsWithChildren & { token?: string | null }> = ({ children, token }) => {
     const [state, dispatch] = useReducer(UserAuthReducer, initialUserState);
-    const [accessToken, setAccessToken] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchUser();
-    }, []);
+        if (state.accessToken || token) {
+            fetchUser();
+        }
+    }, [state.accessToken, token]);
 
     const fetchUser = async () => {
-        const accessToken = await readDataFromAsyncStorage("accessToken");
-        if (accessToken) {
-            setAccessToken(accessToken);
-            const currentUser = await customAxios(
-                getMePath, 
-                { method: HTTPMethods.GET },
-                accessToken
-            );
-            dispatch?.(setUser(currentUser));
-        }
+        const currentUser = await customAxios(
+            getMePath, 
+            { method: HTTPMethods.GET },
+            state.accessToken || token
+        );
+        dispatch?.(setUser(currentUser));
     }
 
     const setToken = (data: AuthToken) => {
@@ -39,7 +35,7 @@ const UserContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <UserContext.Provider value={{
             user: state.user,
-            accessToken: state.accessToken || accessToken,
+            accessToken: state.accessToken || token,
             dispatch,
             setAuthToken: setToken,
             deleteAuthToken: deleteToken,
