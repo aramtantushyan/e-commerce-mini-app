@@ -22,7 +22,7 @@ const HorizontalBannerSlider: React.FC<IHorizontalBannerSliderProps> = ({ banner
     const [visibleIndex, setVisibleIndex] = useState(0);
 
     const getListItemSeparatorComponent = () => {
-        return <ListItemSeparator isHorizontal={true} style={{ width: 16 }}/>
+        return <ListItemSeparator isHorizontal={true}/>
     };
 
     const renderItem = ({ item }: { item: IBannerData }) => (

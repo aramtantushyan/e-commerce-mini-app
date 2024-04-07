@@ -26,10 +26,10 @@ export default ListItemSeparator;
 
 const styles = StyleSheet.create({
     verticalSeparator: {
-        height: 8,
+        height: 16,
         width: "100%",
     },
     horizontalSeparator: {
-        width: 8
+        width: 16
     }
 });

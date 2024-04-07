@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 
-import { CategoriesIcon, HomeIcon, ProfileIcon, WishlistIcon } from "../../src/components/svg/svgIcons";
+import { CategoriesIcon, HomeIcon, ProfileIcon, SearchIcon, WishlistIcon } from "../../src/components/svg/svgIcons";
 import { LightTheme } from "../../src/utils/constants/themes";
 import { useContext } from "react";
 import { UserContext } from "../../src/contexts/user/UserContext";
@@ -24,6 +24,10 @@ const TabsLayout = () => {
             headerLeftContainerStyle: {
                 paddingLeft: 16
             },
+            headerRightContainerStyle: {
+                paddingRight: 16
+            },
+            headerRight: () => <SearchIcon />,
             ...(navigation.getState() && navigation.getState().type === 'tab' ? {
                 headerLeft: () => (
                     <Image

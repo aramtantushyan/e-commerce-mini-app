@@ -1,0 +1,22 @@
+export const CATEGORY_IMAGES = {
+    smartphones: require("../../../assets/images/categories/smartphones.jpg"),
+    laptops: require("../../../assets/images/categories/laptops.jpg"),
+    fragrances: require("../../../assets/images/categories/fragrances.jpg"),
+    skincare: require("../../../assets/images/categories/skincare.jpg"),
+    groceries: require("../../../assets/images/categories/groceries.jpg"),
+    home_decoration: require("../../../assets/images/categories/home-decoration.jpg"),
+    furniture: require("../../../assets/images/categories/furniture.jpg"),
+    tops: require("../../../assets/images/categories/tops.jpg"),
+    womens_dresses: require("../../../assets/images/categories/womens-dresses.jpg"),
+    womens_shoes: require("../../../assets/images/categories/womens-shoes.jpg"),
+    mens_shirts: require("../../../assets/images/categories/mens-shirts.jpg"),
+    mens_shoes: require("../../../assets/images/categories/mens-shoes.jpg"),
+    mens_watches: require("../../../assets/images/categories/mens-watches.jpg"),
+    womens_watches: require("../../../assets/images/categories/womens-watches.jpg"),
+    womens_bags: require("../../../assets/images/categories/womens-bags.jpg"),
+    womens_jewellery: require("../../../assets/images/categories/womens-jewellery.jpg"),
+    sunglasses: require("../../../assets/images/categories/sunglasses.jpg"),
+    automotive: require("../../../assets/images/categories/automotive.jpg"),
+    motorcycle: require("../../../assets/images/categories/motorcycle.jpg"),
+    lighting: require("../../../assets/images/categories/lighting.jpg")
+}

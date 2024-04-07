@@ -1,9 +1,3 @@
-import { View, Text } from 'react-native'
-const categories = () => {
-  return (
-    <View>
-      <Text>categories</Text>
-    </View>
-  )
-}
-export default categories
+import CategoriesScreen from "../../src/components/screens/CategoriesScreen";
+
+export default CategoriesScreen;
