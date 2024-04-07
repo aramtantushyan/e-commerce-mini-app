@@ -11,6 +11,7 @@ interface IThemeColors {
 
 export interface ICustomColors extends IThemeColors {
     brandColor: string;
+    cardBackground: string
 }
 
 export const LightThemeColors: ICustomColors = {
@@ -21,6 +22,7 @@ export const LightThemeColors: ICustomColors = {
     card: "#FFFFFF",
     notification: "rgb(255, 69, 58)",
     brandColor: "#7867BE",
+    cardBackground: "#D9D9D9"
 };
 
 export interface ICustomTheme extends Theme {

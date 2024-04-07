@@ -4,12 +4,13 @@ import { CategoriesIcon, HomeIcon, ProfileIcon, WishlistIcon } from "../../src/c
 import { LightTheme } from "../../src/utils/constants/themes";
 import { useContext } from "react";
 import { UserContext } from "../../src/contexts/user/UserContext";
+import { Image } from "react-native";
 
 const TabsLayout = () => {
     const {user} = useContext(UserContext);
 
     return (
-        <Tabs screenOptions={{ 
+        <Tabs screenOptions={({ navigation, route }) => ({ 
             tabBarActiveTintColor: LightTheme.colors.brandColor,
             headerShadowVisible: false,
             headerTitleStyle: {
@@ -19,8 +20,19 @@ const TabsLayout = () => {
             },
             tabBarStyle: {
                 borderTopWidth: 0
-            }
-        }}>
+            },
+            headerLeftContainerStyle: {
+                paddingLeft: 16
+            },
+            ...(navigation.getState() && navigation.getState().type === 'tab' ? {
+                headerLeft: () => (
+                    <Image
+                        style={{width: 43, resizeMode: "contain"}}
+                        source={require("../../assets/icon.png")}
+                    />
+                )
+            } : {})
+        })}>
             <Tabs.Screen
                 name="index"
                 options={{

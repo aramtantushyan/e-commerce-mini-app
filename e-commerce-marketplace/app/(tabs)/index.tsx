@@ -1,9 +1,3 @@
-import { View, Text } from 'react-native'
-const index = () => {
-  return (
-    <View>
-      <Text>index</Text>
-    </View>
-  )
-}
-export default index;
+import HomeScreen from "../../src/components/screens/HomeScreen";
+
+export default HomeScreen;

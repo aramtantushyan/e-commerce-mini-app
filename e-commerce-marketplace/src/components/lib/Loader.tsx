@@ -9,12 +9,14 @@ interface ILoaderProps {
     opacity?: number,
     indicatorColor?: string,
     overlayBackgroundColor?: string,
-    size?: "large" | "small"
+    size?: "large" | "small",
+    fullScreenLoader?: boolean
 }
 
 const Loader: React.FC<ILoaderProps> = ({
     overlay, opacity, indicatorColor,
-    overlayBackgroundColor = "rgba(0, 0, 0, 0.3)", size
+    overlayBackgroundColor = "rgba(0, 0, 0, 0.3)", size,
+    fullScreenLoader
 }) => {
     const { colors } = useTheme() as ICustomTheme;
 
@@ -25,7 +27,10 @@ const Loader: React.FC<ILoaderProps> = ({
                 styles.overlay, 
                 { opacity: opacity || 0.65 },
                 { backgroundColor: overlayBackgroundColor || "#000" }
-            ] : styles.container
+            ]
+            : fullScreenLoader 
+            ? styles.fullScreenLoader
+            : styles.container
         }>
             <ActivityIndicator 
                 size={size || (overlay ? "large" : "small")}
@@ -52,4 +57,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         zIndex: 1000000
     },
+    fullScreenLoader: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    }
 });
