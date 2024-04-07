@@ -10,9 +10,10 @@ import UIContextProvider from "../src/contexts/ui/UIContextProvider";
 const _layout = () => {
     const [accessToken, setAccessToken] = useState<null | string>();
     const [fontsLoaded, fontError] = useFonts({
-        GothamLight: require('../assets/fonts/GothamLight.otf'),
-        GothamBold: require('../assets/fonts/GothamBold.otf'),
-        GothamMedium: require('../assets/fonts/GothamMedium.otf'),
+        GothamLight: require("../assets/fonts/GothamLight.otf"),
+        GothamBold: require("../assets/fonts/GothamBold.otf"),
+        GothamMedium: require("../assets/fonts/GothamMedium.otf"),
+        GothamThin: require("../assets/fonts/GothamThin.otf"),
     });
     
     useEffect(() => {

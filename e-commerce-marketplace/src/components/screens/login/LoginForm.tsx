@@ -37,7 +37,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({ setIsLoadingLogin, onLoggedIn })
                 method: HTTPMethods.POST,
                 body: {
                     ...data,
-                    expiresInMins: 2
+                    expiresInMins: 60
                 }
             });
             console.log("user", user);

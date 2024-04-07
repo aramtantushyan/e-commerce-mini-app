@@ -7,10 +7,11 @@ interface IAppBasicTextProps {
     children: React.ReactNode | string
     style?: TextStyle | TextStyle[]
     inputProps?: TextProps
-    fontWeight?: 400 | 500 | 600
+    fontWeight?: 300 | 400 | 500 | 600
 }
 
 const FontByWeight = {
+    300: "GothamThin",
     400: "GothamLight",
     500: "GothamMedium",
     600: "GothamBold",

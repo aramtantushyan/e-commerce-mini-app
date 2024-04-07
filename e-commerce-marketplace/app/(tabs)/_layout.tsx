@@ -7,16 +7,26 @@ import { UserContext } from "../../src/contexts/user/UserContext";
 
 const TabsLayout = () => {
     const {user} = useContext(UserContext);
+
     return (
         <Tabs screenOptions={{ 
             tabBarActiveTintColor: LightTheme.colors.brandColor,
-            headerShadowVisible: false
+            headerShadowVisible: false,
+            headerTitleStyle: {
+                fontFamily: "GothamMedium",
+                lineHeight: 19.2,
+                textTransform: "uppercase"
+            },
+            tabBarStyle: {
+                borderTopWidth: 0
+            }
         }}>
             <Tabs.Screen
                 name="index"
                 options={{
                     title: 'Home',
                     tabBarIcon: ({ color }) => <HomeIcon fillColor={color}/>,
+                    headerTitle: ""
                 }}
             />
             <Tabs.Screen
