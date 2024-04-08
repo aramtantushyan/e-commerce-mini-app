@@ -25,7 +25,7 @@ const CategoriesScreen: React.FC = () => {
     };
 
     const categoryPressHandler = (categoryName: string) => {
-        router.push(`category/${categoryName}`);
+        router.push(`products/${categoryName}`);
     }
 
     const renderItem = ({ item }: { item: string }) => (
@@ -38,7 +38,6 @@ const CategoriesScreen: React.FC = () => {
                         backgroundColor: colors.cardBackground
                     }
                 ]}
-                onError={(er) => console.log(er)}
             />
             <View style={styles.categoryNameContainer}>
                 <CustomText style={styles.categoryName} fontWeight={500}>

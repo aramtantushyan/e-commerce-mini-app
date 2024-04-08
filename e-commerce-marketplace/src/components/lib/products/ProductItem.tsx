@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { useTheme } from "@react-navigation/native";
 
 import { IProduct } from "../../../utils/types/product";
@@ -8,6 +8,8 @@ import { RatingStarIcon } from "../../svg/svgIcons";
 import FavoriteButton from "../FavoriteButton";
 import { useContext, useMemo } from "react";
 import { WishlistContext } from "../../../contexts/wishlist/WishlistContext";
+import { UserContext } from "../../../contexts/user/UserContext";
+import { router } from "expo-router";
 
 interface IProductItemProps {
     width: number;
@@ -17,12 +19,17 @@ interface IProductItemProps {
 const ProductItem: React.FC<IProductItemProps> = ({ width, product }) => {
     const { colors } = useTheme() as ICustomTheme;
     const { wishlistData } = useContext(WishlistContext);
+    const { user } = useContext(UserContext);
 
     const isFav = useMemo(() => {
         return wishlistData?.some(wishlistItem => {
             return wishlistItem.category === product.category && wishlistItem.id === product.id
         })
     }, [wishlistData?.length]);
+
+    const onProductPressHandler = () => {
+        router.push(`/product/${product.id}`);
+    }
 
     return (
         <View
@@ -31,7 +38,7 @@ const ProductItem: React.FC<IProductItemProps> = ({ width, product }) => {
                 { width }
             ]}
         >
-            <View style={styles.thumbnailContainer}>
+            <Pressable style={styles.thumbnailContainer} onPress={onProductPressHandler}>
                 <Image
                     source={{ uri: product.thumbnail}}
                     style={[
@@ -43,13 +50,15 @@ const ProductItem: React.FC<IProductItemProps> = ({ width, product }) => {
                         }
                     ]}
                 />
-                <View style={styles.favIconContainer}>
-                    <FavoriteButton
-                        isFavorite={!!isFav}
-                        product={product}
-                    />
-                </View>
-            </View>
+                {user ? (
+                    <View style={styles.favIconContainer}>
+                        <FavoriteButton
+                            isFavorite={!!isFav}
+                            product={product}
+                        />
+                    </View>
+                ) : null}
+            </Pressable>
             <CustomText style={styles.productTitle} inputProps={{ numberOfLines: 2}}>
                 {product.title}
             </CustomText>

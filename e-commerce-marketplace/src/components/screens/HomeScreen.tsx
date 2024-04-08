@@ -4,7 +4,7 @@ import { useTheme } from "@react-navigation/native";
 
 import HorizontalBannerSlider from "../lib/HorizontalBannerSlider";
 import { useAxios } from "../../hooks/useAxios";
-import { getCategoriesPath } from "../../utils/api/api";
+import { getCategoriesPath, getProductsByCategoryPath } from "../../utils/api/api";
 import Loader from "../lib/Loader";
 import ProductsList from "../lib/products/ProductsList";
 import ListItemSeparator from "../lib/lists/ListItemSeparator";
@@ -28,7 +28,7 @@ const HomeScreen: React.FC = () => {
     const insets = useSafeAreaInsets();
     const { colors } = useTheme() as ICustomTheme;
 
-    const { loading, data: categories, fetch } = useAxios(getCategoriesPath);
+    const { loading, data: categories } = useAxios(getCategoriesPath);
 
     if (loading) {
         return <Loader fullScreenLoader={true} size="large" />
@@ -69,6 +69,7 @@ const HomeScreen: React.FC = () => {
                         categoryName={item}
                         allowScroll={false}
                         showHeader={true}
+                        url={getProductsByCategoryPath(item)}
                     />
                 )}
             />

@@ -8,6 +8,7 @@ import { XIcon } from "../../svg/svgIcons";
 import CustomText from "../../lib/CustomText";
 import LoginForm from "./LoginForm";
 import Loader from "../../lib/Loader";
+import Toast from "react-native-toast-message";
 
 
 const LoginScreen: React.FC = ({}) => {
@@ -60,6 +61,7 @@ const LoginScreen: React.FC = ({}) => {
             {isLoadingLogin && (
                 <Loader overlay={true} />
             )}
+            <Toast />
         </View>
     );
 };

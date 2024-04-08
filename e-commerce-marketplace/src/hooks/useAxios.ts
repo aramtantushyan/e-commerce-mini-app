@@ -4,6 +4,7 @@ import { UserContext } from "../contexts/user/UserContext";
 import { deleteAuthToken, logoutUser } from "../reducers/user/UserReducerDispatch";
 import { removeDataFromAsyncStorage } from "../utils/helpers/async-storage.helper";
 import { WishlistContext } from "../contexts/wishlist/WishlistContext";
+import { ToastType, createToast } from "../utils/helpers/toast.helper";
 
 export enum HTTPMethods {
     POST = "post",
@@ -38,7 +39,7 @@ export const useAxios = <T = any, >(url?: string, requestConfig?: IRequestConfig
         url && fetch(url, requestConfig);
     }, [url, JSON.stringify(requestConfig?.queryParams)]);
 
-    const fetch = async (url?: string, requestConfig?: IRequestConfig) => {
+    const fetch = async (url?: string, requestConfig?: IRequestConfig, showErrorToast = true) => {
         if (!url) {
             return Promise.reject();
         }
@@ -55,7 +56,7 @@ export const useAxios = <T = any, >(url?: string, requestConfig?: IRequestConfig
                 loading: false
             });
             return response;
-        } catch (error: AxiosError) {
+        } catch (error: AxiosError) {            
             if (error.response?.status === 401) {
                 dispatch?.(deleteAuthToken());
                 dispatch?.(logoutUser());
@@ -66,6 +67,12 @@ export const useAxios = <T = any, >(url?: string, requestConfig?: IRequestConfig
                 ...fullData,
                 loading: false
             });
+            if (showErrorToast) {
+                createToast({
+                    type: ToastType.ERROR,
+                    text2: error.response?.data.message || "Something went wrong"
+                });
+            }
             throw error;
         }
     }
@@ -76,7 +83,7 @@ export const useAxios = <T = any, >(url?: string, requestConfig?: IRequestConfig
     };
 }
 
-export async function customAxios(url: string, requestConfig: IRequestConfig = {}, accessToken?: string | null) {
+export async function customAxios(url: string, requestConfig: IRequestConfig = {}, accessToken?: string | null, showErrorToast = false) {
     const requestOptions = { method: HTTPMethods.GET, ...requestConfig };
     const params = new URLSearchParams();
 
@@ -110,6 +117,12 @@ export async function customAxios(url: string, requestConfig: IRequestConfig = {
             return response.data;
         }
     } catch (e: AxiosError) {
+        if (showErrorToast) {
+            createToast({
+                type: ToastType.ERROR,
+                text2: e.response?.data.message || "Something went wrong"
+            });
+        }
         console.log("Axios error:", {
             ...(e.response?.data || {}),
             url

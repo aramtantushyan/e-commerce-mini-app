@@ -55,7 +55,7 @@ const HorizontalBannerSlider: React.FC<IHorizontalBannerSliderProps> = ({ banner
     }
 
     return (
-        <View style={{flex: 1, position: "relative"}}>
+        <View style={{position: "relative"}}>
             <FlatList
                 showsHorizontalScrollIndicator={false}
                 horizontal={true}

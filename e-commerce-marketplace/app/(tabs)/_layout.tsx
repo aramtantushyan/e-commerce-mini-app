@@ -24,9 +24,6 @@ const TabsLayout = () => {
             headerLeftContainerStyle: {
                 paddingLeft: 16
             },
-            headerRightContainerStyle: {
-                paddingRight: 16
-            },
             headerRight: () => <SearchIcon />,
             ...(navigation.getState() && navigation.getState().type === 'tab' ? {
                 headerLeft: () => (

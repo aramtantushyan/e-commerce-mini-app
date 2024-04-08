@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { readDataFromAsyncStorage } from "../src/utils/helpers/async-storage.helper";
 import UserContextProvider from "../src/contexts/user/UserContextProvider";
@@ -54,6 +55,7 @@ const _layout = () => {
                     </WishlistContextProvider>
                 </UIContextProvider>
             </UserContextProvider>
+            <Toast />
         </View>
     )
 }

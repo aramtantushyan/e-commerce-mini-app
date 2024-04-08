@@ -12,31 +12,49 @@ import { getProductsByCategoryPath } from "../../../utils/api/api";
 import EmptyListPlaceholder from "../lists/EmptyListPlaceholder";
 import Loader from "../Loader";
 import ProductItem from "./ProductItem";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface IProductsListProps {
-    categoryName: string;
+    categoryName?: string;
     showHeader?: boolean;
     allowScroll?: boolean;
-    limit?: number
+    limit?: number;
+    url: string;
+    searchKeyword?: string
 }
 
-const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, allowScroll, limit = 4 }) => {
+const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, allowScroll, limit = 4, url, searchKeyword }) => {
     const { width } = useWindowDimensions();
     const { colors } = useTheme() as ICustomTheme;
-
+    const insets = useSafeAreaInsets();
+    
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [products, setProducts] = useState<IProduct[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
 
     const { data, loading, fetch } = useAxios();
 
     useEffect(() => {
         fetchProducts(false);
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (!searchKeyword) {
+            !loading && fetchProducts(true);
+        } else if (searchKeyword) {
+            const filteredProducts = products.filter(p => {
+                return p.title.toLowerCase().includes(searchKeyword.toLowerCase());
+            })
+            setFilteredProducts(filteredProducts);
+        }
+    }, [searchKeyword])
 
     const columnWidth = (width - 32 - 16) / 2;
 
     const seeAllPressHandler = () => {
-        categoryName && router.push(`category/${categoryName}`);
+        if (categoryName) {
+            router.push(`products/${categoryName}`)
+        }
     }
 
     const getListHeaderComponent = () => {
@@ -44,7 +62,7 @@ const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, 
             return (
                 <View style={styles.listHeader}>
                     <CustomText fontWeight={500} style={styles.listHeaderTitle}>
-                        {categoryName.replaceAll("-", " ")}
+                        {categoryName?.replaceAll("-", " ")}
                     </CustomText>
                     <Pressable onPress={seeAllPressHandler}>
                         <CustomText
@@ -72,27 +90,29 @@ const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, 
     );
 
     const fetchProducts = (isRefreshing = false) => {
-        setIsRefreshing(isRefreshing);
-        const queryParams = {
-            limit,
-            skip: 0
-        }
-        if (products.length && !isRefreshing) {
-            queryParams.skip = products.at(-1)?.id as number;
-        }
-        fetch(getProductsByCategoryPath(categoryName), {
-            queryParams
-        }).then(data => {
-            if (data.products.length) {
-                if (isRefreshing) {
-                    setProducts(data.products);
-                } else {
-                    setProducts([...products, ...data.products]);
-                }
+        if (!searchKeyword) {
+            setIsRefreshing(isRefreshing);
+            const queryParams = {
+                limit,
+                skip: 0
             }
-        }).finally(() => {
-            setIsRefreshing(false);
-        });
+            if (allowScroll && products.length && !isRefreshing) {
+                queryParams.skip = products.at(-1)?.id as number;
+            }
+            fetch(url, {
+                queryParams
+            }).then(data => {
+                if (data.products.length) {
+                    if (isRefreshing) {
+                        setProducts(data.products);
+                    } else {
+                        setProducts([...products, ...data.products]);
+                    }
+                }
+            }).finally(() => {
+                setIsRefreshing(false);
+            });
+        }
     }
 
     if (!data) {
@@ -108,7 +128,10 @@ const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, 
         <FlatList
             contentContainerStyle={[
                 styles.container,
-                { width }
+                { 
+                    width,
+                    paddingBottom: insets.bottom || 24
+                }
             ]}
             numColumns={2}
             columnWrapperStyle={{
@@ -127,8 +150,6 @@ const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, 
             }
             onEndReached={() => {
                 if (allowScroll && products.length < data?.total && !loading) {
-                    console.log("endreached");
-                    
                     fetchProducts();
                 }
             }}
@@ -137,8 +158,8 @@ const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, 
             ListHeaderComponentStyle={{marginBottom: 12}}
             ListEmptyComponent={EmptyListPlaceholder}
             ListFooterComponent={getListFooterComponent}
-            data={products}
-            keyExtractor={(item) => `${categoryName}-${item.id}`}
+            data={searchKeyword ? filteredProducts : products}
+            keyExtractor={(item) => `${item.category}-${item.id}`}
             ItemSeparatorComponent={ListItemSeparator}
             renderItem={renderItem}
         />

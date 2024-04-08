@@ -40,7 +40,6 @@ const LoginForm: React.FC<ILoginFormProps> = ({ setIsLoadingLogin, onLoggedIn })
                     expiresInMins: 60
                 }
             });
-            console.log("user", user);
             
             if (user) {
                 const accessToken = user.token;
@@ -52,8 +51,6 @@ const LoginForm: React.FC<ILoginFormProps> = ({ setIsLoadingLogin, onLoggedIn })
                 setIsLoadingLogin(false);
             }
         } catch (e) {
-            console.log("error");
-            
             setIsLoadingLogin(false);
         }
     }

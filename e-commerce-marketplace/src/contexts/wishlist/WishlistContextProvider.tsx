@@ -1,29 +1,31 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useContext, useEffect, useState } from "react";
 
 import { WishlistContext } from "./WishlistContext";
 import { IProduct } from "../../utils/types/product";
 import { addProductToWishList, getWishlistProducts, removeProductFromWishList } from "../../utils/helpers/wishlist.helper";
+import { UserContext } from "../user/UserContext";
 
 const WishlistContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
+    const { user } = useContext(UserContext);
     const [wishlistProducts, setWishlistProducts] = useState<IProduct[]>([]);
 
     useEffect(() => {
-        getWishlistProducts()
-            .then(data => setWishlistProducts(data));
-    }, []);
+        if (user) {
+            getWishlistProducts(user?.id)
+                .then(data => setWishlistProducts(data));
+        }
+    }, [user]);
 
     const removeItemFromWishlist = async (productCategory: string, productId: number) => {
-        const isRemoved = await removeProductFromWishList(productCategory, productId);
+        const isRemoved = await removeProductFromWishList(productCategory, productId, user?.id as number);
         if (isRemoved) {
             const newWishlistData = wishlistProducts.filter((p) => p.category !== productCategory && p.id !== productId);
             setWishlistProducts(newWishlistData);
         }
     }
 
-    const addItemToWishlist = async (product: IProduct) => {
-        console.log("adding wishlist");
-        
-        const isAdded = await addProductToWishList(product);
+    const addItemToWishlist = async (product: IProduct) => {        
+        const isAdded = await addProductToWishList(product, user?.id as number);
         if (isAdded) {
             setWishlistProducts([...wishlistProducts, product]);
         }

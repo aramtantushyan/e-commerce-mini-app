@@ -19,7 +19,8 @@ const UserContextProvider: React.FC<PropsWithChildren & { token?: string | null 
         const currentUser = await customAxios(
             getMePath, 
             { method: HTTPMethods.GET },
-            state.accessToken || token
+            state.accessToken || token,
+            true
         );
         dispatch?.(setUser(currentUser));
     }
