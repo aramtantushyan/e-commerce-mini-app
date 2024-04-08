@@ -49,7 +49,7 @@ const CategoriesScreen: React.FC = () => {
     );
 
     if (loading && !categories) {
-        return <Loader fullScreenLoader={true}/>
+        return <Loader fullScreenLoader={true} size="large"/>
     }
 
     return (

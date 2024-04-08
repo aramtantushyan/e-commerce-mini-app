@@ -27,6 +27,8 @@ const styles = StyleSheet.create({
     },
     placeholderText: {
         fontFamily: "GothamMedium",
-        color: "#9a9a9a"
+        color: "#9a9a9a",
+        textAlign: "center",
+        lineHeight: 19
     }
 })

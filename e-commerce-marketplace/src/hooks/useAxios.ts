@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/user/UserContext";
 import { deleteAuthToken, logoutUser } from "../reducers/user/UserReducerDispatch";
 import { removeDataFromAsyncStorage } from "../utils/helpers/async-storage.helper";
+import { WishlistContext } from "../contexts/wishlist/WishlistContext";
 
 export enum HTTPMethods {
     POST = "post",
@@ -26,6 +27,8 @@ interface IAxiosState<T> {
 
 export const useAxios = <T = any, >(url?: string, requestConfig?: IRequestConfig) => {
     const { accessToken, dispatch } = useContext(UserContext);
+    const { removeLocallyStoredWishlistData } = useContext(WishlistContext);
+
     const [fullData, setFullData] = useState<IAxiosState<T>>({
         loading: !!url,
         data: null
@@ -57,6 +60,7 @@ export const useAxios = <T = any, >(url?: string, requestConfig?: IRequestConfig
                 dispatch?.(deleteAuthToken());
                 dispatch?.(logoutUser());
                 removeDataFromAsyncStorage("accessToken");
+                removeLocallyStoredWishlistData?.();
             }
             setFullData({
                 ...fullData,

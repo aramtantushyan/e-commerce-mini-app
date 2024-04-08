@@ -7,6 +7,7 @@ import { deleteAuthToken, logoutUser } from "../../reducers/user/UserReducerDisp
 import { removeDataFromAsyncStorage } from "../../utils/helpers/async-storage.helper";
 import { LogoutIcon } from "../svg/svgIcons";
 import CustomText from "./CustomText";
+import { WishlistContext } from "../../contexts/wishlist/WishlistContext";
 
 interface ILogoutButtonProps {
     label?: string;
@@ -14,12 +15,15 @@ interface ILogoutButtonProps {
 
 const LogoutButton: React.FC<ILogoutButtonProps> = ({ label }) => {
     const { dispatch } = useContext(UserContext);
+    const { removeLocallyStoredWishlistData } = useContext(WishlistContext);
+
     const [showModal, setShowModal] = useState(false);
 
     const logoutHandeler = () => {
         dispatch?.(deleteAuthToken());
         dispatch?.(logoutUser());
         removeDataFromAsyncStorage("accessToken");
+        removeLocallyStoredWishlistData?.();
         router.replace("/");
     };
 

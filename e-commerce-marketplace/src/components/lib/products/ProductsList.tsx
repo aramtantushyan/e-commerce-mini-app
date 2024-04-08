@@ -1,18 +1,17 @@
+import { useEffect, useState } from "react";
 import { FlatList, Image, Pressable, RefreshControl, StyleSheet, View, useWindowDimensions } from "react-native";
 import { useTheme } from "@react-navigation/native";
+import { router } from "expo-router";
 
-import ListItemSeparator from "./ListItemSeparator";
+import ListItemSeparator from "../lists/ListItemSeparator";
 import { ICustomTheme } from "../../../utils/constants/themes";
 import { IProduct } from "../../../utils/types/product";
 import CustomText from "../CustomText";
-import { RatingStarIcon } from "../../svg/svgIcons";
 import { useAxios } from "../../../hooks/useAxios";
-import { useEffect, useState } from "react";
 import { getProductsByCategoryPath } from "../../../utils/api/api";
-import EmptyListPlaceholder from "./EmptyListPlaceholder";
+import EmptyListPlaceholder from "../lists/EmptyListPlaceholder";
 import Loader from "../Loader";
-import { getPathDataFromState } from "expo-router/build/fork/getPathFromState";
-import { router } from "expo-router";
+import ProductItem from "./ProductItem";
 
 interface IProductsListProps {
     categoryName: string;
@@ -24,6 +23,7 @@ interface IProductsListProps {
 const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, allowScroll, limit = 4 }) => {
     const { width } = useWindowDimensions();
     const { colors } = useTheme() as ICustomTheme;
+
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [products, setProducts] = useState<IProduct[]>([]);
 
@@ -38,10 +38,6 @@ const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, 
     const seeAllPressHandler = () => {
         categoryName && router.push(`category/${categoryName}`);
     }
-
-    const getListItemSeparatorComponent = () => {
-        return <ListItemSeparator style={{ height: 16 }}/>
-    };
 
     const getListHeaderComponent = () => {
         if (showHeader) {
@@ -72,38 +68,7 @@ const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, 
     }
 
     const renderItem = ({ item }: { item: IProduct }) => (
-        <View
-            style={[
-                styles.productItem, 
-                { width: columnWidth }
-            ]}
-        >
-            <Image
-                source={{ uri: item.thumbnail}}
-                style={[
-                    styles.productThumbnail,
-                    { 
-                        width: columnWidth,
-                        height: columnWidth,
-                        backgroundColor: colors.cardBackground
-                    }
-                ]}
-            />
-            <CustomText style={styles.productTitle} inputProps={{ numberOfLines: 2}}>
-                {item.title}
-            </CustomText>
-            <View style={styles.productDetails}>
-                <View style={{flexDirection: 'row'}}>
-                    <RatingStarIcon/>
-                    <CustomText style={styles.productTitle}>
-                        {item.rating}
-                    </CustomText>
-                </View>
-                <CustomText style={styles.productPrice} fontWeight={500}>
-                    ${item.price}
-                </CustomText>
-            </View>
-        </View>
+        <ProductItem product={item} width={columnWidth}/>
     );
 
     const fetchProducts = (isRefreshing = false) => {
@@ -174,7 +139,7 @@ const ProductsList: React.FC<IProductsListProps> = ({ categoryName, showHeader, 
             ListFooterComponent={getListFooterComponent}
             data={products}
             keyExtractor={(item) => `${categoryName}-${item.id}`}
-            ItemSeparatorComponent={getListItemSeparatorComponent}
+            ItemSeparatorComponent={ListItemSeparator}
             renderItem={renderItem}
         />
     );
@@ -186,22 +151,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         paddingHorizontal: 16,
         rowGap: 16
-    },
-    productItem: {
-        gap: 10
-    },
-    productThumbnail: {
-        resizeMode: "contain",
-        borderRadius: 10
-    },
-    productTitle: {
-        fontSize: 12,
-        lineHeight: 14.4,
-        textTransform: "uppercase"
-    },
-    productPrice: {
-        fontSize: 14,
-        lineHeight: 16.8
     },
     listHeader: {
         flexDirection: "row",
@@ -217,13 +166,5 @@ const styles = StyleSheet.create({
         fontSize: 12,
         lineHeight: 14.4,
         textDecorationLine: "underline"
-    },
-    productDetails: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 16,
-        width: "100%",
-        marginTop: "auto"
     }
 })

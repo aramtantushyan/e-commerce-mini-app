@@ -65,7 +65,8 @@ const TabsLayout = () => {
                 options={{
                     title: 'Profile',
                     tabBarIcon: ({ color }) => <ProfileIcon fillColor={color} />,
-                    headerShown: !!user
+                    headerShown: !!user,
+                    headerRight: () => null
                 }}
             />
         </Tabs>

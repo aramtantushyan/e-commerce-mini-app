@@ -6,7 +6,7 @@ import HorizontalBannerSlider from "../lib/HorizontalBannerSlider";
 import { useAxios } from "../../hooks/useAxios";
 import { getCategoriesPath } from "../../utils/api/api";
 import Loader from "../lib/Loader";
-import ProductsList from "../lib/lists/ProductsList";
+import ProductsList from "../lib/products/ProductsList";
 import ListItemSeparator from "../lib/lists/ListItemSeparator";
 import { ICustomTheme } from "../../utils/constants/themes";
 

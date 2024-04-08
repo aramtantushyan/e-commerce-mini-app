@@ -43,7 +43,7 @@ const ProfileScreen: React.FC = () => {
                 showsVerticalScrollIndicator={false}
             >
                 {userProfileActions.map((a, i) => (
-                    <Pressable style={[
+                    <Pressable key={i} style={[
                         styles.profileActionItemContainer,
                         {
                             borderColor: colors.border,
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 16,
+        paddingTop: 16,
         backgroundColor: "#FFF"
     },
     userInfoContainer: {

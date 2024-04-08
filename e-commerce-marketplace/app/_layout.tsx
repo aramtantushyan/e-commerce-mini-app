@@ -6,6 +6,7 @@ import { View, StyleSheet } from 'react-native';
 import { readDataFromAsyncStorage } from "../src/utils/helpers/async-storage.helper";
 import UserContextProvider from "../src/contexts/user/UserContextProvider";
 import UIContextProvider from "../src/contexts/ui/UIContextProvider";
+import WishlistContextProvider from "../src/contexts/wishlist/WishlistContextProvider";
 
 const _layout = () => {
     const [accessToken, setAccessToken] = useState<null | string>();
@@ -39,16 +40,18 @@ const _layout = () => {
         <View style={styles.container} onLayout={onLayoutRootView}>
             <UserContextProvider token={accessToken}>
                 <UIContextProvider>
-                    <Stack>
-                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                        <Stack.Screen 
-                            name="login"
-                            options={{ 
-                                headerShown: false,
-                                presentation: "modal"
-                            }}
-                        />
-                    </Stack>
+                    <WishlistContextProvider>
+                        <Stack>
+                            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                            <Stack.Screen 
+                                name="login"
+                                options={{ 
+                                    headerShown: false,
+                                    presentation: "modal"
+                                }}
+                            />
+                        </Stack>
+                    </WishlistContextProvider>
                 </UIContextProvider>
             </UserContextProvider>
         </View>
