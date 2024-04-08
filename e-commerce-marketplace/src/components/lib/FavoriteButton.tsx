@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
-import { Text, Pressable } from "react-native";
+import { useContext } from "react";
+import { Pressable } from "react-native";
+
 import { FavoriteIcon, FilledFavoriteIcon } from "../svg/svgIcons";
-import { addProductToWishList, removeProductFromWishList } from "../../utils/helpers/wishlist.helper";
 import { IProduct } from "../../utils/types/product";
 import { WishlistContext } from "../../contexts/wishlist/WishlistContext";
 
@@ -16,7 +16,7 @@ const FavoriteButton: React.FC<IFavoriteButtonProps> = ({ size = 18, isFavorite,
 
     const addRemoveFavoriteHandler = async () => {        
         if (isFavorite) {
-            removeFromWishlistData?.(product.category, product.id);
+            removeFromWishlistData?.(product.id);
         } else {
             addToWishlistData?.(product);
         }

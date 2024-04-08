@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Image, View, Pressable } from "react-native";
+import { FlatList, StyleSheet, Image, View, Pressable, RefreshControl } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@react-navigation/native";
 
@@ -11,12 +11,21 @@ import { ICustomTheme } from "../../utils/constants/themes";
 import CustomText from "../lib/CustomText";
 import { CATEGORY_IMAGES } from "../../utils/constants/categoriy-images";
 import { router } from "expo-router";
+import { useState } from "react";
 
 const CategoriesScreen: React.FC = () => {
     const insets = useSafeAreaInsets();
     const { colors } = useTheme() as ICustomTheme;
 
-    const { data: categories, loading } = useAxios(getCategoriesPath);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const { data: categories, loading, fetch } = useAxios(getCategoriesPath);
+
+    const fetchCategories = () => {
+        setIsRefreshing(true);
+        fetch(getCategoriesPath)
+        .finally(() => setIsRefreshing(false));
+    }
 
     const getListItemSeparatorComponent = () => {
         return (
@@ -61,6 +70,14 @@ const CategoriesScreen: React.FC = () => {
             showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={getListItemSeparatorComponent}
             ListEmptyComponent={EmptyListPlaceholder}
+            refreshControl={
+                <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={fetchCategories}
+                    colors={[colors.brandColor]}
+                    tintColor={colors.brandColor}
+                />
+            }
             data={categories}
             keyExtractor={(iten, index) => `${index}`}
             renderItem={renderItem}
@@ -81,7 +98,7 @@ const styles = StyleSheet.create({
     categoryImage: {
         width: "100%",
         height: 130,
-        resizeMode: "contain",
+        resizeMode: "cover",
         borderRadius: 10
     },
     categoryName: {

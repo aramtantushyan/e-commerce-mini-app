@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, FlatList } from "react-native";
+import { ScrollView, StyleSheet, FlatList, RefreshControl } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "@react-navigation/native";
 
@@ -9,6 +9,7 @@ import Loader from "../lib/Loader";
 import ProductsList from "../lib/products/ProductsList";
 import ListItemSeparator from "../lib/lists/ListItemSeparator";
 import { ICustomTheme } from "../../utils/constants/themes";
+import { useState } from "react";
 
 const banners = [
     {
@@ -28,11 +29,9 @@ const HomeScreen: React.FC = () => {
     const insets = useSafeAreaInsets();
     const { colors } = useTheme() as ICustomTheme;
 
-    const { loading, data: categories } = useAxios(getCategoriesPath);
+    const { loading, data: categories, fetch } = useAxios(getCategoriesPath);
 
-    if (loading) {
-        return <Loader fullScreenLoader={true} size="large" />
-    }
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const getListItemSeparatorComponent = () => {
         return (
@@ -46,6 +45,16 @@ const HomeScreen: React.FC = () => {
         );
     };
 
+    const fetchCategories = () => {
+        setIsRefreshing(true);
+        fetch(getCategoriesPath)
+        .finally(() => setIsRefreshing(false));
+    }
+
+    if (loading) {
+        return <Loader fullScreenLoader={true} size="large" />
+    }
+
     return (
         <ScrollView
             contentContainerStyle={[
@@ -54,6 +63,14 @@ const HomeScreen: React.FC = () => {
             ]}
             alwaysBounceVertical={false}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+                <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={fetchCategories}
+                    colors={[colors.brandColor]}
+                    tintColor={colors.brandColor}
+                />
+            }
         >
             <HorizontalBannerSlider bannersData={banners} />
             <FlatList

@@ -37,6 +37,7 @@ const LoginScreen: React.FC = ({}) => {
                 alwaysBounceVertical={false}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.mainContent}
+                extraScrollHeight={10}
             >
                 <View style={styles.logoContainer}>
                     <CustomText style={styles.pageTitle} fontWeight={500}>

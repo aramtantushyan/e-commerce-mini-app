@@ -46,7 +46,7 @@ const ProductDetailsScreen: React.FC = () => {
                 <FavoriteButton size={20} product={product} isFavorite={!!isFav} />
             ) : null
         })
-    }, [product]);
+    }, [product, isFav, user]);
 
     const fetchProduct = () => {
         setIsRefreshig(true);

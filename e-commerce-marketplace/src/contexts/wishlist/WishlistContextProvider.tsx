@@ -16,10 +16,10 @@ const WishlistContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
         }
     }, [user]);
 
-    const removeItemFromWishlist = async (productCategory: string, productId: number) => {
-        const isRemoved = await removeProductFromWishList(productCategory, productId, user?.id as number);
+    const removeItemFromWishlist = async (productId: number) => {
+        const isRemoved = await removeProductFromWishList(productId, user?.id as number);
         if (isRemoved) {
-            const newWishlistData = wishlistProducts.filter((p) => p.category !== productCategory && p.id !== productId);
+            const newWishlistData = wishlistProducts.filter((p) => p.id !== productId);
             setWishlistProducts(newWishlistData);
         }
     }

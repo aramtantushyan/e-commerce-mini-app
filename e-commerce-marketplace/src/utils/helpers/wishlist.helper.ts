@@ -26,10 +26,10 @@ export const addProductToWishList = async (product: IProduct, currentUserId: num
     }
 };
 
-export const removeProductFromWishList = async (categoryName: string, id: number, currentUserId: number) => {
+export const removeProductFromWishList = async (id: number, currentUserId: number) => {
     try {
         const existingProducts = await getWishlistProducts(currentUserId);
-        const newProductsList = existingProducts.filter((p: IProduct) => p.category !== categoryName && p.id !== id)
+        const newProductsList = existingProducts.filter((p: IProduct) => p.id !== id)
         return await storeDataToAsyncStorage(wishlistKey(currentUserId), newProductsList);
     } catch (e) {
         createToast({

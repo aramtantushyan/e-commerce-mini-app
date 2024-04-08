@@ -4,7 +4,7 @@ import { IProduct } from "../../utils/types/product";
 export interface IWishlistContextProps {
     wishlistData?: IProduct[];
     addToWishlistData?: (newProduct: IProduct) => void;
-    removeFromWishlistData?: (categoryName: string, id: number) => void;
+    removeFromWishlistData?: (id: number) => void;
     removeLocallyStoredWishlistData?: () => void;
 }
 
